@@ -1,0 +1,50 @@
+{
+  "name": "vm-worker",
+  "version": "0.0.1",
+  "description": "Tiny VM for browser to execute commonjs modules in Web Worker",
+  "keywords": [
+    "vm",
+    "eval",
+    "browser",
+    "commonjs",
+    "module",
+    "web",
+    "worker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cweili/vm-worker.git"
+  },
+  "author": "Cweili",
+  "license": "MIT",
+  "homepage": "https://cweili.github.io/vm-worker/",
+  "bugs": {
+    "url": "https://github.com/Cweili/vm-worker/issues"
+  },
+  "main": "src/index.js",
+  "sideEffects": false,
+  "scripts": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "worker-loader": "^3.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-plugin-import": "^2.26.0",
+    "fast-async": "^7.0.6",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3"
+  }
+}

@@ -1,0 +1,40 @@
+# dependencies
+.pnp
+.pnp.js
+
+# testing
+coverage
+test
+
+# production
+build
+report
+alfa
+
+# config
+.eslint*
+jest.config.js
+gem-mine.config.js
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.tmp
+*.swo
+*.swp
+*.diff
+*.log
+*.patch
+
+.idea
+.vscode
+.cache-loade
+.history
