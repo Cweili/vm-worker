@@ -53,4 +53,8 @@ export default class VM {
   exec(...args) {
     return this._call('exec', ...args)
   }
+
+  terminate() {
+    this._worker.terminate()
+  }
 }

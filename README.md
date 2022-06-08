@@ -1,7 +1,7 @@
 # VM Worker
 
 [![npm][badge-version]][npm]
-[![bundle size][badge-size]][bundlephobia]
+<!-- [![bundle size][badge-size]][bundlephobia] -->
 [![npm downloads][badge-downloads]][npm]
 [![license][badge-license]][license]
 [![github][badge-issues]][github]
@@ -51,8 +51,8 @@ npm i vm-worker
 [badge-downloads]: https://img.shields.io/npm/dt/vm-worker.svg
 [npm]: https://www.npmjs.com/package/vm-worker
 
-[badge-size]: https://img.shields.io/bundlephobia/minzip/vm-worker.svg
-[bundlephobia]: https://bundlephobia.com/result?p=vm-worker
+<!-- [badge-size]: https://img.shields.io/bundlephobia/minzip/vm-worker.svg
+[bundlephobia]: https://bundlephobia.com/result?p=vm-worker -->
 
 [badge-license]: https://img.shields.io/npm/l/vm-worker.svg
 [license]: https://github.com/Cweili/vm-worker/blob/master/LICENSE
