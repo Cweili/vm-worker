@@ -1,4 +1,7 @@
 /* eslint-disable no-new-func, no-restricted-globals */
+import resolvePath from 'resolve-pathname'
+
+const requireCache = new Map()
 
 async function fetchScript(url) {
   const resp = await fetch(url, {
@@ -7,28 +10,44 @@ async function fetchScript(url) {
   return resp.text()
 }
 
-const requireCache = new Map()
-
-function require(path) {
-  const module = {
-    exports: {},
-  }
-
-  const filenameWithoutExt = path.replace(/^\.\//, '').replace(/\.js$/, '')
-  const filename = `${filenameWithoutExt}.js`
-  const dirname = '.'
-  const fn = requireCache.get(filename) || requireCache.get(filenameWithoutExt)
-  if (fn) {
-    fn(module.exports, require, module, filename, dirname)
-    return module.exports
-  }
-  throw new Error(`module "${path}" not found`)
+function getAbsolutePath(path) {
+  return `${path[0] === '/' ? '' : '/'}${path}`
 }
+
+function getRequire(baseDir = '/') {
+  return (path) => {
+    const module = {
+      exports: {},
+    }
+
+    const filenameWithoutExt = path.replace(/\.js$/, '').replace(/^\S*?([^/]+)$/, '$1')
+    const filename = `${filenameWithoutExt}.js`
+    const dirname = resolvePath(path.replace(/^(\S*?)[^/]+$/, '$1'), baseDir).replace(/\/$/, '')
+    const dirnameWithSlash = `${dirname}/`
+    const isRoot = !dirname.length
+    const fn = requireCache.get(dirnameWithSlash + filename)
+      || requireCache.get(dirnameWithSlash + filenameWithoutExt)
+      || requireCache.get(`${dirnameWithSlash}${filenameWithoutExt}/index.js`)
+    if (fn) {
+      fn(
+        module.exports,
+        getRequire(dirnameWithSlash),
+        module,
+        filename,
+        isRoot ? '/' : dirname,
+      )
+      return module.exports
+    }
+    throw new Error(`module "${path}" not found`)
+  }
+}
+
+const requireFn = getRequire()
 
 const fns = {
   async require(files) {
     const scripts = (await Promise.all(files.map(async (file) => ({
-      path: file.path,
+      path: getAbsolutePath(file.path),
       fn: new Function(
         'exports',
         'require',
@@ -44,8 +63,7 @@ const fns = {
   },
 
   async exec(path, ...args) {
-    // eslint-disable-next-line import/no-dynamic-require
-    return require(path)(...args)
+    return requireFn(path)(...args)
   },
 }
 

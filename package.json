@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "resolve-pathname": "^3.0.0",
     "worker-loader": "^3.0.8"
   },
   "devDependencies": {
