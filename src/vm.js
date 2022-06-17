@@ -23,7 +23,8 @@ export default class VM {
       const id = `${Date.now()}${Math.random()}`
       const cb = (error, result) => {
         if (error) {
-          const err = new Error(error.name)
+          const err = new Error(error.message)
+          err.name = error.name
           err.stack = error.stack
           reject(err)
         } else {

@@ -1,6 +1,7 @@
 /* eslint-disable no-new-func, no-restricted-globals */
 import resolvePath from 'resolve-pathname'
 
+const srcCache = new Map()
 const requireCache = new Map()
 
 async function fetchScript(url) {
@@ -16,6 +17,11 @@ function getAbsolutePath(path) {
 
 function getRequire(baseDir = '/') {
   return (path) => {
+    const exports = requireCache.get(path)
+    if (exports) {
+      return exports
+    }
+
     const module = {
       exports: {},
     }
@@ -25,9 +31,21 @@ function getRequire(baseDir = '/') {
     const dirname = resolvePath(path.replace(/^(\S*?)[^/]+$/, '$1'), baseDir).replace(/\/$/, '')
     const dirnameWithSlash = `${dirname}/`
     const isRoot = !dirname.length
-    const fn = requireCache.get(dirnameWithSlash + filename)
-      || requireCache.get(dirnameWithSlash + filenameWithoutExt)
-      || requireCache.get(`${dirnameWithSlash}${filenameWithoutExt}/index.js`)
+    const alternative = [
+      dirnameWithSlash + filename,
+      dirnameWithSlash + filenameWithoutExt,
+      `${dirnameWithSlash}${filenameWithoutExt}/index.js`,
+    ]
+    let filePath
+    let fn
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < alternative.length; i++) {
+      fn = srcCache.get(alternative[i])
+      if (fn) {
+        filePath = alternative[i]
+        break
+      }
+    }
     if (fn) {
       fn(
         module.exports,
@@ -36,13 +54,14 @@ function getRequire(baseDir = '/') {
         filename,
         isRoot ? '/' : dirname,
       )
+      requireCache.set(filePath, module.exports)
       return module.exports
     }
     throw new Error(`module "${path}" not found`)
   }
 }
 
-const requireFn = getRequire()
+const requireModule = getRequire()
 
 const fns = {
   async require(files) {
@@ -58,12 +77,12 @@ const fns = {
       ),
     }))))
     scripts.forEach((script) => {
-      requireCache.set(script.path, script.fn)
+      srcCache.set(script.path, script.fn)
     })
   },
 
   async exec(path, ...args) {
-    return requireFn(path)(...args)
+    return requireModule(path)(...args)
   },
 }
 
@@ -84,6 +103,7 @@ self.addEventListener('message', (e) => {
         id,
         error: {
           name: error.name,
+          message: error.message,
           stack: error.stack,
         },
       })
