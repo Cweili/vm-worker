@@ -5,11 +5,14 @@
   "keywords": [
     "vm",
     "eval",
+    "exec",
+    "execute",
     "browser",
     "commonjs",
     "module",
     "web",
-    "worker"
+    "worker",
+    "webworker"
   ],
   "repository": {
     "type": "git",
