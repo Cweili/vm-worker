@@ -13,7 +13,7 @@ alfa
 
 # config
 .babel*
-.browserlistrc
+.browserslistrc
 .eslint*
 jest.config.js
 rollup.config.js
