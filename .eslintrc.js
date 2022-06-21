@@ -8,6 +8,11 @@ module.exports = {
     mocha: true,
     jest: true,
   },
+  parser: '@babel/eslint-parser',
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+  },
   rules: {
     'default-param-last': ['off'],
     'no-multi-assign': ['off'],

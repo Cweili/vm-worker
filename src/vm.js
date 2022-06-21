@@ -1,10 +1,9 @@
-/* eslint-disable import/no-unresolved, import/no-webpack-loader-syntax */
-import Worker from 'worker-loader!./worker'
+import workerFn from '../dist/worker.js.txt'
 
 export default class VM {
   constructor(options) {
     const cache = this._cache = new Map()
-    const worker = this._worker = new Worker()
+    const worker = this._worker = new Worker(workerFn.replace(/text\/plain/, 'application/javascript'))
     this.options = {
       timeout: 100000,
       ...(options || {}),

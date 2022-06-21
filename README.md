@@ -1,6 +1,7 @@
 # VM Worker
 
 [![npm][badge-version]][npm]
+[![bundle size][badge-size]][bundlephobia]
 [![npm downloads][badge-downloads]][npm]
 [![license][badge-license]][license]
 [![github][badge-issues]][github]
@@ -45,8 +46,6 @@ module.exports = (a, b) => (a + b)
 ```sh
 npm i vm-worker
 ```
-
-**VM Worker depends on `worker-loader`, so it only works with Webpack.**
 
 [badge-version]: https://img.shields.io/npm/v/vm-worker.svg
 [badge-downloads]: https://img.shields.io/npm/dt/vm-worker.svg
