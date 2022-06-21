@@ -32,7 +32,7 @@ export default class VM {
         this._cache.delete(id)
       }
       const t = setTimeout(() => {
-        cb(new Error(`"${fn}" execution timeout`))
+        cb(new Error(`${fn} timeout`))
       }, this.options.timeout)
       this._cache.set(id, {
         t,
