@@ -30,7 +30,7 @@
   "jsdelivr": "dist/vm-worker.js",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c"
+    "prepare": "rollup -c && rexreplace \"text/plain\" \"applicaion/javascript\" dist/*.js"
   },
   "husky": {
     "hooks": {
@@ -60,6 +60,7 @@
     "husky": "^4.3.8",
     "lint-staged": "^10.5.3",
     "resolve-pathname": "^3.0.0",
+    "rexreplace": "^7.0.7",
     "rollup": "^2.75.6",
     "rollup-plugin-terser": "^7.0.2"
   }

@@ -12,9 +12,11 @@ report
 alfa
 
 # config
+.babel*
+.browserlistrc
 .eslint*
 jest.config.js
-gem-mine.config.js
+rollup.config.js
 
 # misc
 .DS_Store

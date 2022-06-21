@@ -10,7 +10,7 @@ const plugins = [
     include: ['**/*.txt'],
     limit: Infinity,
   }),
-];
+]
 
 export default [
   {
@@ -21,7 +21,10 @@ export default [
         format: 'iife',
       },
     ],
-    plugins: plugins.concat(terser()),
+    plugins: plugins
+      .concat([
+        terser(),
+      ]),
   },
   {
     input: 'src/index.js',
@@ -42,4 +45,4 @@ export default [
     ],
     plugins,
   },
-];
+]

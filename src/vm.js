@@ -3,7 +3,7 @@ import workerFn from '../dist/worker.js.txt'
 export default class VM {
   constructor(options) {
     const cache = this._cache = new Map()
-    const worker = this._worker = new Worker(workerFn.replace(/text\/plain/, 'application/javascript'))
+    const worker = this._worker = new Worker(workerFn)
     this.options = {
       timeout: 100000,
       ...(options || {}),
