@@ -1,4 +1,5 @@
 /* eslint-disable no-new-func, no-restricted-globals */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import resolvePath from 'resolve-pathname'
 
 const srcCache = new Map()
