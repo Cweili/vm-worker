@@ -1,7 +1,7 @@
 module.exports = {
-  setupFiles: [
-    'jsdom-worker',
-  ],
+  // setupFiles: [
+  //   'jsdom-worker',
+  // ],
   transform: {
     '^.+\\.[jt]s$': 'babel-jest',
   },
