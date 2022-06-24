@@ -18,11 +18,6 @@ function getAbsolutePath(path) {
 
 function getRequire(baseDir = '/') {
   return (path) => {
-    const exports = requireCache.get(path)
-    if (exports) {
-      return exports
-    }
-
     const module = {
       exports: {},
     }
@@ -44,6 +39,12 @@ function getRequire(baseDir = '/') {
       fn = srcCache.get(alternative[i])
       if (fn) {
         filePath = alternative[i]
+
+        const exports = requireCache.get(filePath)
+        if (exports) {
+          return exports
+        }
+
         break
       }
     }
