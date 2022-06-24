@@ -59,7 +59,7 @@
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.26.0",
     "fast-async": "^7.0.6",
-    "husky": "^4.3.8",
+    "husky": "^8.0.1",
     "jest": "^28.1.1",
     "lint-staged": "^10.5.3",
     "mitt": "^3.0.0",
