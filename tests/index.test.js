@@ -36,16 +36,16 @@ it('should execute modules', async () => {
 
   await vm.require([
     {
-      path: 'a.js',
+      path: 'index.js',
       url: 'https://cdn.jsdelivr.net/gh/Cweili/vm-worker@master/tests/mocks/a.js',
     },
     {
-      path: '/b/b.js',
-      src: 'module.exports = require("../a")',
+      path: 'b/b.js',
+      src: 'module.exports = require("..")',
     },
     {
       path: '/c/c.js',
-      src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../a")(a, b)',
+      src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../")(a, b)',
     },
   ])
 

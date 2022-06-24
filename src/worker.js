@@ -22,15 +22,15 @@ function getRequire(baseDir = '/') {
       exports: {},
     }
 
-    const filenameWithoutExt = path.replace(/\.js$/, '').replace(/^\S*?([^/]+)$/, '$1')
+    const pathParts = /((?:[^/]*\/)*)(.*)/.exec(path.replace(/\.js$/, ''))
+    const filenameWithoutExt = (!pathParts[2] || pathParts[2] === '..') ? 'index' : pathParts[2]
     const filename = `${filenameWithoutExt}.js`
-    const dirname = resolvePath(path.replace(/^(\S*?)[^/]+$/, '$1'), baseDir).replace(/\/$/, '')
+    const dirname = resolvePath(pathParts[2] === '..' ? '../' : pathParts[1], baseDir).replace(/\/$/, '')
     const dirnameWithSlash = `${dirname}/`
     const isRoot = !dirname.length
     const alternative = [
       dirnameWithSlash + filename,
       dirnameWithSlash + filenameWithoutExt,
-      `${dirnameWithSlash}${filenameWithoutExt}/index.js`,
     ]
     let filePath
     let fn
