@@ -4,7 +4,10 @@
 [![bundle size][badge-size]][bundlephobia]
 [![npm downloads][badge-downloads]][npm]
 [![license][badge-license]][license]
+
 [![github][badge-issues]][github]
+[![build][badge-build]][workflows]
+[![coverage][badge-coverage]][coveralls]
 
 Tiny VM for browser to execute commonjs modules in Web Worker.
 
