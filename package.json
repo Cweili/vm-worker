@@ -30,7 +30,7 @@
   "jsdelivr": "dist/vm-worker.js",
   "sideEffects": false,
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --runInBand --detectOpenHandles --coverage",
     "prepare": "rollup -c && rexreplace \"text/plain\" \"applicaion/javascript\" dist/*.js"
   },
   "husky": {

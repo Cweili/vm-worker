@@ -28,22 +28,22 @@ it('should execute modules', async () => {
       args: [
         [
           {
-            path: '/a/a.js',
-            url: 'https://cdn.jsdelivr.net/gh/Cweili/vm-worker/tests/mocks/a.js',
+            path: 'a.js',
+            url: 'https://cdn.jsdelivr.net/gh/Cweili/vm-worker@master/tests/mocks/a.js',
           },
           {
             path: '/b/b.js',
-            src: 'module.exports = require("../a/a")',
+            src: 'module.exports = require("../a")',
           },
           {
             path: '/c/c.js',
-            src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../a/a")(a, b)',
+            src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../a")(a, b)',
           },
         ],
       ],
     },
   })
-  await sleep(1000)
+  await sleep(2000)
   handlers.message({
     data: {
       id: '2',
