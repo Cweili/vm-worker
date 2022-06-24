@@ -1,6 +1,9 @@
+import fetch from 'node-fetch'
+
 const handlers = {}
 let message
 
+global.fetch = fetch
 global.self = {
   addEventListener(eventName, handler) {
     handlers[eventName] = handler
@@ -26,28 +29,49 @@ it('should execute modules', async () => {
         [
           {
             path: '/a/a.js',
-            src: 'module.exports = (a, b) => (a + b)',
+            url: 'https://cdn.jsdelivr.net/gh/Cweili/vm-worker/tests/mocks/a.js',
           },
           {
             path: '/b/b.js',
             src: 'module.exports = require("../a/a")',
           },
+          {
+            path: '/c/c.js',
+            src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../a/a")(a, b)',
+          },
         ],
       ],
     },
   })
-  await sleep(10)
+  await sleep(1000)
   handlers.message({
     data: {
       id: '2',
       fn: 'exec',
       args: [
-        '/b/b.js',
+        '/c/c.js',
         1,
         2,
       ],
     },
   })
   await sleep(10)
-  expect(message.result).toBe(3)
+  expect(message.result).toBe(6)
+})
+
+it('should handlers module not exist', async () => {
+  await import('../src/worker')
+
+  await sleep(10)
+  handlers.message({
+    data: {
+      id: '3',
+      fn: 'exec',
+      args: [
+        '/d/d.js',
+      ],
+    },
+  })
+  await sleep(10)
+  expect(message.error).toBeTruthy()
 })
