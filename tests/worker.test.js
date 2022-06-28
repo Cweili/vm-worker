@@ -1,9 +1,6 @@
-import fetch from 'node-fetch'
-
 const handlers = {}
 let message
 
-global.fetch = fetch
 global.self = {
   addEventListener(eventName, handler) {
     handlers[eventName] = handler

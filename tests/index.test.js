@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import mitt from 'mitt'
-import fetch from 'node-fetch'
 
 const host = mitt()
 const worker = mitt()
@@ -18,7 +17,6 @@ class Worker {
   }
 }
 
-global.fetch = fetch
 global.Worker = Worker
 global.self = {
   addEventListener: (eventName, listener) => {
