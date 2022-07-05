@@ -1,7 +1,7 @@
 {
   "name": "vm-worker",
   "version": "0.2.2",
-  "description": "Tiny VM for browser to execute commonjs modules in Web Worker",
+  "description": "Tiny VM for browser to execute javascript modules in Web Worker",
   "keywords": [
     "vm",
     "eval",

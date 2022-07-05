@@ -9,7 +9,7 @@
 [![build][badge-build]][workflows]
 [![coverage][badge-coverage]][coveralls]
 
-Tiny VM for browser to execute commonjs modules in Web Worker.
+Tiny VM for browser to execute javascript modules in Web Worker.
 
 ## Usage
 
@@ -19,7 +19,7 @@ App.js
 import VM from 'vm-worker'
 
 const vm = VM({
-  timeout: 100000 // default 100000ms
+  timeout: 100000, // default 100000ms
 })
 
 await vm.require([
@@ -33,7 +33,7 @@ await vm.require([
   },
 ])
 
-await vm.exec('b.js', 1, 2) // => 3
+await vm.exec('/dirB/b.js', 1, 2) // => 3
 
 vm.terminate()
 ```
@@ -42,6 +42,44 @@ a.js
 
 ```js
 module.exports = (a, b) => (a + b)
+```
+
+### ECMAScript Modules
+
+App.js
+
+```js
+import VM from 'vm-worker'
+import ESMPlugin from 'vm-worker/dist/plugins/esmodule.esm'
+
+const vm = VM({
+  plugins: [
+    ESMPlugin(),
+  ],
+})
+
+await vm.require([
+  {
+    path: '/dirA/a.js',
+    url: 'https://xxx.com/a.js',
+  },
+  {
+    path: '/dirB/b.js',
+    src: 'import { plus } from "../dirA/a"\nexport default plus',
+  },
+])
+
+await vm.exec('/dirB/b.js', 1, 2) // => 3
+
+vm.terminate()
+```
+
+a.js
+
+```js
+export function plus(a, b) {
+  return a + b
+}
 ```
 
 ## Installation
