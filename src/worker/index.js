@@ -17,21 +17,19 @@ self.addEventListener('message', (e) => {
     fn,
     args,
   } = e.data
-  if (fns[fn]) {
-    fns[fn](...args).then((result) => {
-      self.postMessage({
-        id,
-        result,
-      })
-    }).catch((error) => {
-      self.postMessage({
-        id,
-        error: {
-          name: error.name,
-          message: error.message,
-          stack: error.stack,
-        },
-      })
+  fns[fn](...args).then((result) => {
+    self.postMessage({
+      id,
+      result,
     })
-  }
+  }).catch((error) => {
+    self.postMessage({
+      id,
+      error: {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      },
+    })
+  })
 }, false)

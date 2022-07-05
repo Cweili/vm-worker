@@ -1,10 +1,7 @@
 /* global plugin */
-
-import imports from 'rewrite-imports'
+import { rewrite } from 'rewrite-imports'
 
 plugin.on('load', (content) => {
-  const urls = []
-  const mod = { exports: {} }
   const keys = []
   let key
   let result = content
@@ -32,5 +29,5 @@ plugin.on('load', (content) => {
     result += `\nexports.${key} = ${key};`
   }
 
-  return imports(result)
+  return rewrite(result)
 })

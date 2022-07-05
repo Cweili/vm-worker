@@ -4,7 +4,7 @@ module.exports = {
   // ],
   transform: {
     '^.+\\.[jt]s$': 'babel-jest',
-    '^.+\\.plugin\\.worker\\.txt$': 'jest-text-transformer',
+    '^.+\\.plugin\\.txt$': './build/jest-transformer-text.js',
   },
   transformIgnorePatterns: [
     'node_modules[\\\\/](?!(data-uri-to-buffer|formdata-polyfill|fetch-blob|node-fetch)[\\\\/])',

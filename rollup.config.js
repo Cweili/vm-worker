@@ -19,7 +19,7 @@ export default pluginModules
       input: `src/plugins/${pluginModule}/worker.js`,
       output: [
         {
-          file: `dist/workers/${pluginModule}.plugin.worker.txt`,
+          file: `dist/workers/${pluginModule}.plugin.txt`,
           format: 'iife',
         },
       ],

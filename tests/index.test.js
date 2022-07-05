@@ -25,7 +25,7 @@ it('should execute modules', async () => {
   vm.terminate()
 })
 
-it('should handlers module not exist', async () => {
+it('should handles module not exist', async () => {
   const VM = (await import('../src')).default
 
   const vm = VM()
