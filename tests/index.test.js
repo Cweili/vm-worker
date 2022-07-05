@@ -36,18 +36,21 @@ it('should handles module not exist', async () => {
 })
 
 it('should throw error on timeout', async () => {
+  jest.useRealTimers()
   const VM = (await import('../src')).default
 
-  const vm = VM({ timeout: 10 })
+  const vm = VM({ timeout: 20 })
 
   await vm.require([
     {
       path: 'timeout.js',
-      src: 'module.exports = () => new Promise((resolve) => setTimeout(resolve, 30))',
+      src: 'module.exports = () => new Promise((resolve) => {})',
     },
   ])
 
   expect(vm.exec('timeout.js')).rejects.toThrow()
+  // eslint-disable-next-line no-promise-executor-return
+  await new Promise((resolve) => setTimeout(resolve, 30))
 
   vm.terminate()
 })
