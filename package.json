@@ -8,11 +8,17 @@
     "exec",
     "execute",
     "browser",
-    "commonjs",
-    "module",
     "web",
     "worker",
-    "webworker"
+    "webworker",
+    "module",
+    "esm",
+    "esmodule",
+    "commonjs",
+    "import",
+    "export",
+    "exports",
+    "require"
   ],
   "repository": {
     "type": "git",
