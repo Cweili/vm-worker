@@ -16,7 +16,7 @@ export default class VM {
         call.cb(data.error, data.result)
       }
     })
-    this._call('plugin', this.options.plugins)
+    this._plugin = this._call('plugin', this.options.plugins)
   }
 
   _call(fn, ...args) {
@@ -49,11 +49,11 @@ export default class VM {
   }
 
   require(files) {
-    return this._call('require', files)
+    return this._plugin.then(() => this._call('require', files))
   }
 
   exec(...args) {
-    return this._call('exec', ...args)
+    return this._plugin.then(() => this._call('exec', ...args))
   }
 
   terminate() {
