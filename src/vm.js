@@ -16,7 +16,9 @@ export default class VM {
         call.cb(data.error, data.result)
       }
     })
-    this._plugin = this._call('plugin', this.options.plugins)
+    this._plugin = this.options.plugins.length
+      ? this._call('plugin', this.options.plugins)
+      : Promise.resolve()
   }
 
   _call(fn, ...args) {

@@ -16,9 +16,7 @@ alfa
 .babel*
 .browserslistrc
 .eslint*
-babel.config.js
-jest.config.js
-rollup.config.js
+*.config.js
 
 # misc
 .DS_Store
