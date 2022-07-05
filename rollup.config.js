@@ -37,6 +37,7 @@ export default pluginModules
           {
             file: `dist/plugins/${pluginModule}.cjs.js`,
             format: 'cjs',
+            exports: 'default',
           },
           {
             file: `dist/plugins/${pluginModule}.esm.js`,
@@ -76,6 +77,7 @@ export default pluginModules
         {
           file: 'dist/vm-worker.cjs.js',
           format: 'cjs',
+          exports: 'default',
         },
         {
           file: 'dist/vm-worker.esm.js',
