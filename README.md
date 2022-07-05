@@ -65,7 +65,8 @@ await vm.require([
   },
   {
     path: '/dirB/b.js',
-    src: 'import { plus } from "../dirA/a"\nexport default plus',
+    src: `import { plus } from "../dirA/a"
+          export default plus`,
   },
 ])
 
