@@ -30,7 +30,7 @@
   "jsdelivr": "dist/vm-worker.js",
   "sideEffects": false,
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles --coverage",
+    "test": "jest tests/plugin --runInBand --detectOpenHandles --coverage",
     "prepare": "rollup -c && rexreplace \"text/plain\" \"applicaion/javascript\" dist/*.js"
   },
   "husky": {
@@ -61,11 +61,16 @@
     "fast-async": "^7.0.6",
     "husky": "^8.0.1",
     "jest": "^28.1.1",
+    "jest-text-transformer": "^1.0.4",
     "lint-staged": "^13.0.2",
     "mitt": "^3.0.0",
     "resolve-pathname": "^3.0.0",
     "rexreplace": "^7.0.7",
     "rollup": "^2.75.6",
+    "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2"
+  },
+  "dependencies": {
+    "rewrite-imports": "^3.0.0"
   }
 }

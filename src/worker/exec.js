@@ -1,4 +1,4 @@
-/* eslint-disable no-new-func, no-restricted-globals */
+/* eslint-disable no-new-func */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import resolvePath from 'resolve-pathname'
 
@@ -65,50 +65,28 @@ function getRequire(baseDir = '/') {
 
 const requireModule = getRequire()
 
-const fns = {
-  async require(files) {
-    const scripts = (await Promise.all(files.map(async (file) => ({
-      path: getAbsolutePath(file.path),
-      fn: new Function(
-        'exports',
-        'require',
-        'module',
-        '__filename',
-        '__dirname',
-        file.url ? await fetchScript(file.url) : file.src,
-      ),
-    }))))
-    scripts.forEach((script) => {
-      srcCache.set(script.path, script.fn)
-    })
-  },
-
-  async exec(path, ...args) {
-    return requireModule(path)(...args)
-  },
-}
-
-self.addEventListener('message', (e) => {
-  const {
-    id,
-    fn,
-    args,
-  } = e.data
-  if (fns[fn]) {
-    fns[fn](...args).then((result) => {
-      self.postMessage({
-        id,
-        result,
+export default function setup(pluginSetups) {
+  return {
+    async require(files) {
+      const scripts = (await Promise.all(files.map(async (file) => ({
+        path: getAbsolutePath(file.path),
+        fn: new Function(
+          'exports',
+          'require',
+          'module',
+          '__filename',
+          '__dirname',
+          [file.url ? await fetchScript(file.url) : file.src].concat(pluginSetups.onLoad)
+            .reduce((result, reducer) => reducer(result)),
+        ),
+      }))))
+      scripts.forEach((script) => {
+        srcCache.set(script.path, script.fn)
       })
-    }).catch((error) => {
-      self.postMessage({
-        id,
-        error: {
-          name: error.name,
-          message: error.message,
-          stack: error.stack,
-        },
-      })
-    })
+    },
+
+    async exec(path, ...args) {
+      return requireModule(path)(...args)
+    },
   }
-}, false)
+}

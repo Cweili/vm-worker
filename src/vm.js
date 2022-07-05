@@ -1,4 +1,4 @@
-import workerFn from '../dist/worker.js.txt'
+import workerFn from '../dist/workers/vm-worker.worker.txt'
 
 export default class VM {
   constructor(options) {
@@ -6,6 +6,7 @@ export default class VM {
     const worker = this._worker = new Worker(workerFn)
     this.options = {
       timeout: 100000,
+      plugins: [],
       ...(options || {}),
     }
     worker.addEventListener('message', ({ data }) => {
@@ -15,6 +16,7 @@ export default class VM {
         call.cb(data.error, data.result)
       }
     })
+    this._call('plugin', this.options.plugins)
   }
 
   _call(fn, ...args) {
