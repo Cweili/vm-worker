@@ -16,6 +16,8 @@ module.exports = {
   rules: {
     'default-param-last': ['off'],
     'no-multi-assign': ['off'],
+    'no-new-func': ['off'],
+    'no-plusplus': ['off'],
     'no-underscore-dangle': ['off'],
     semi: ['error', 'never'],
   },

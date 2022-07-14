@@ -1,5 +1,3 @@
-/* eslint-disable no-new-func */
-
 export default function setup(pluginSetups) {
   return {
     async plugin(plugins) {

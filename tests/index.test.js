@@ -1,6 +1,6 @@
 import './mocks/web-workers'
 
-it('should execute modules', async () => {
+it('should execute scripts', async () => {
   const VM = (await import('../src')).default
 
   const vm = VM()
@@ -9,18 +9,35 @@ it('should execute modules', async () => {
     {
       path: 'index.js',
       url: 'https://cdn.jsdelivr.net/gh/Cweili/vm-worker@master/tests/mocks/a.js',
+      // src: 'module.exports = (a, b) => (a + b)',
     },
     {
-      path: 'b/b.js',
+      path: 'b/index.js',
       src: 'module.exports = require("..")',
     },
     {
-      path: '/c/c.js',
-      src: 'module.exports = (a, b) => require("../b/b")(a, b) + require("../")(a, b)',
+      path: 'c/d.js',
+      src: 'module.exports = require("b")',
+    },
+    {
+      path: 'e/f.js',
+      src: 'module.exports = require("c/d")',
+    },
+    {
+      path: 'g/index.js',
+      src: 'module.exports = require("../e/f")',
+    },
+    {
+      path: '/h/i.js',
+      src: 'module.exports = require("../g")',
+    },
+    {
+      path: '/test/test',
+      src: 'module.exports = (a, b) => require("../h/i")(a, b) + require("../")(a, b)',
     },
   ])
 
-  expect(await vm.exec('/c/c.js', 1, 2)).toBe(6)
+  expect(await vm.exec('test/test', 1, 2)).toBe(6)
 
   vm.terminate()
 })
@@ -30,7 +47,15 @@ it('should handles module not exist', async () => {
 
   const vm = VM()
 
-  expect(vm.exec('/d/d.js')).rejects.toThrow()
+  await vm.require([
+    {
+      path: 'exist',
+      src: 'module.exports = require("./not/exist")',
+    },
+  ])
+
+  expect(vm.exec('not/exist.js')).rejects.toThrow()
+  expect(vm.exec('exist.js')).rejects.toThrow()
 
   vm.terminate()
 })

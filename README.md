@@ -24,6 +24,10 @@ const vm = VM({
 
 await vm.require([
   {
+    path: 'module-one/index.js',
+    src: 'module.exports = 1',
+  },
+  {
     path: '/dirA/a.js',
     url: 'https://xxx.com/a.js',
   },
@@ -33,7 +37,7 @@ await vm.require([
   },
 ])
 
-await vm.exec('/dirB/b.js', 1, 2) // => 3
+await vm.exec('/dirB/b.js', 1, 2) // => 4
 
 vm.terminate()
 ```
@@ -41,7 +45,7 @@ vm.terminate()
 a.js
 
 ```js
-module.exports = (a, b) => (a + b)
+module.exports = (a, b) => (a + b + require('module-one'))
 ```
 
 ### ECMAScript Modules
@@ -60,6 +64,10 @@ const vm = VM({
 
 await vm.require([
   {
+    path: 'module-one/index.js',
+    src: `export const ONE = 1`
+  },
+  {
     path: '/dirA/a.js',
     url: 'https://xxx.com/a.js',
   },
@@ -70,7 +78,7 @@ await vm.require([
   },
 ])
 
-await vm.exec('/dirB/b.js', 1, 2) // => 3
+await vm.exec('/dirB/b.js', 1, 2) // => 4
 
 vm.terminate()
 ```
@@ -78,8 +86,10 @@ vm.terminate()
 a.js
 
 ```js
+import { ONE } from 'module-one'
+
 export function plus(a, b) {
-  return a + b
+  return a + b + A
 }
 ```
 
