@@ -19,6 +19,7 @@ App.js
 import VM from 'vm-worker'
 
 const vm = VM({
+  debug: false, // default false
   timeout: 100000, // default 100000ms
 })
 
