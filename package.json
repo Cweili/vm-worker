@@ -1,6 +1,6 @@
 {
   "name": "vm-worker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tiny VM for browser to execute javascript modules in Web Worker",
   "keywords": [
     "vm",
