@@ -25,7 +25,11 @@ export default pluginModules
       ],
       plugins: plugins
         .concat([
-          terser(),
+          terser({
+            compress: {
+              drop_debugger: false,
+            },
+          }),
         ]),
     }
   ))
@@ -68,7 +72,11 @@ export default pluginModules
       ],
       plugins: plugins
         .concat([
-          terser(),
+          terser({
+            compress: {
+              drop_debugger: false,
+            },
+          }),
         ]),
     },
     {

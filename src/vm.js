@@ -2,9 +2,10 @@ import workerFn from '../dist/workers/vm-worker.worker.txt'
 
 export default class VM {
   constructor(options) {
-    const cache = this._cache = new Map()
-    const worker = this._worker = new Worker(workerFn)
-    this.options = {
+    const cache = this._c = new Map()
+    const worker = this._w = new Worker(workerFn)
+    const opts = this._o = {
+      debug: false,
       timeout: 100000,
       plugins: [],
       ...(options || {}),
@@ -16,8 +17,8 @@ export default class VM {
         call.cb(data.error, data.result)
       }
     })
-    this._plugin = this.options.plugins.length
-      ? this._call('plugin', this.options.plugins)
+    this._p = opts.plugins.length
+      ? this._call('plugin', opts.plugins)
       : Promise.resolve()
   }
 
@@ -28,21 +29,21 @@ export default class VM {
         if (error) {
           const err = new Error(error.message)
           err.name = error.name
-          err.stack = error.stack
+          err.stack = error.stack.replace(/data:\S+?:\d+:\d+/g, `vm-worker:${fn}`)
           reject(err)
         } else {
           resolve(result)
         }
-        this._cache.delete(id)
+        this._c.delete(id)
       }
       const t = setTimeout(() => {
         cb(new Error(`${fn} timeout`))
-      }, this.options.timeout)
-      this._cache.set(id, {
+      }, this._o.timeout)
+      this._c.set(id, {
         t,
         cb,
       })
-      this._worker.postMessage({
+      this._w.postMessage({
         id,
         fn,
         args,
@@ -51,14 +52,14 @@ export default class VM {
   }
 
   require(files) {
-    return this._plugin.then(() => this._call('require', files))
+    return this._p.then(() => this._call('require', this._o.debug, files))
   }
 
   exec(...args) {
-    return this._plugin.then(() => this._call('exec', ...args))
+    return this._p.then(() => this._call('exec', this._o.debug, ...args))
   }
 
   terminate() {
-    this._worker.terminate()
+    this._w.terminate()
   }
 }

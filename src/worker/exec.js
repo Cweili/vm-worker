@@ -94,19 +94,31 @@ function getRequire(baseDir = '/') {
 
 const requireModule = getRequire()
 
+function nameFunction(name, fn) {
+  Object.defineProperty(fn, 'name', {
+    value: name,
+    writable: false,
+  })
+  return fn
+}
+
 export default function setup(pluginSetups) {
   return {
-    async require(files) {
+    async require(debug, files) {
       const scripts = (await Promise.all(files.map(async (file) => ({
         path: getAbsolutePath(file.path),
-        fn: new Function(
-          'exports',
-          'require',
-          'module',
-          '__filename',
-          '__dirname',
-          [file.url ? await fetchScript(file.url) : file.src].concat(pluginSetups.onLoad)
-            .reduce((result, reducer) => reducer(result)),
+        fn: nameFunction(
+          file.path,
+          new Function(
+            'exports',
+            'require',
+            'module',
+            '__filename',
+            '__dirname',
+            (debug ? `console.warn('[VmWorker] Debug "${file.path}" by tracing this stack.');\n` : '')
+            + [file.url ? await fetchScript(file.url) : file.src].concat(pluginSetups.onLoad)
+              .reduce((result, reducer) => reducer(result)),
+          ),
         ),
       }))))
       scripts.forEach((script) => {
@@ -114,8 +126,19 @@ export default function setup(pluginSetups) {
       })
     },
 
-    async exec(path, ...args) {
-      return requireModule(getAbsolutePath(path), path)(...args)
+    exec(debug, path, ...args) {
+      return new Promise((resolve, reject) => {
+        try {
+          resolve(requireModule(getAbsolutePath(path), path)(...args))
+        } catch (err) {
+          if (debug) {
+            console.error('[VmWorker]', err)
+            // eslint-disable-next-line no-debugger
+            debugger
+          }
+          reject(err)
+        }
+      })
     },
   }
 }

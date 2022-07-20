@@ -79,3 +79,20 @@ it('should throw error on timeout', async () => {
 
   vm.terminate()
 })
+
+it('should log debug messages', async () => {
+  const VM = (await import('../src')).default
+
+  const vm = VM({ debug: true })
+
+  await vm.require([
+    {
+      path: 'debug.js',
+      src: 'throw new Error()',
+    },
+  ])
+
+  expect(vm.exec('debug.js')).rejects.toThrow()
+
+  vm.terminate()
+})

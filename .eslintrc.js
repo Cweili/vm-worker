@@ -15,6 +15,7 @@ module.exports = {
   },
   rules: {
     'default-param-last': ['off'],
+    'no-console': ['off'],
     'no-multi-assign': ['off'],
     'no-new-func': ['off'],
     'no-plusplus': ['off'],

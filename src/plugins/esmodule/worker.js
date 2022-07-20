@@ -1,4 +1,5 @@
 /* global plugin */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { rewrite } from 'rewrite-imports'
 
 plugin.on('load', (content) => {
