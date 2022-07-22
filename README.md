@@ -90,7 +90,7 @@ a.js
 import { ONE } from 'module-one'
 
 export function plus(a, b) {
-  return a + b + A
+  return a + b + ONE
 }
 ```
 
