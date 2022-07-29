@@ -69,7 +69,6 @@
     "jest": "^28.1.1",
     "lint-staged": "^13.0.2",
     "mitt": "^3.0.0",
-    "resolve-pathname": "^3.0.0",
     "rewrite-imports": "^3.0.0",
     "rexreplace": "^7.0.7",
     "rollup": "^2.75.6",

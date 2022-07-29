@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import resolvePathname from 'resolve-pathname'
-
-const DEFAULT_ENTRY = 'index'
+const DEFAULT_ENTRY = '/index'
 const DEFAULT_EXT = '.js'
 
 const srcCache = new Map()
@@ -18,57 +15,54 @@ function getAbsolutePath(path) {
   return `${path[0] === '/' ? '' : '/'}${path}`
 }
 
+function resolvePath(baseDir, relativePath) {
+  if (relativePath[0] !== '.') {
+    return getAbsolutePath(relativePath)
+  }
+  const path = baseDir.split('/')
+  const segs = []
+  segs.push(...relativePath.split('/'))
+  path.pop()
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const seg of segs) {
+    if (seg === '..') {
+      path.pop()
+    } else if (seg !== '.') {
+      path.push(seg)
+    }
+  }
+
+  const result = path.join('/')
+
+  return result === '/' ? '' : result
+}
+
 function getRequire(baseDir = '/') {
   return (path, originalPath) => {
     const module = {
       exports: {},
     }
-
-    const isRelative = path[0] === '.'
-    const [, dirNameMatched, fileNameMatched] = /((?:[^/]*\/)*)(.*)/.exec(path.replace(/\.js$/, ''))
-    const fileNameWithoutExt = (!dirNameMatched || !fileNameMatched)
-      ? DEFAULT_ENTRY
-      : fileNameMatched
-    const dirNameWithSlash = `${
-      isRelative
-        ? resolvePathname(fileNameMatched === '..' ? '../' : dirNameMatched, baseDir).replace(/\/$/, '')
-        : `/${dirNameMatched ? dirNameMatched.substr(0, dirNameMatched.length - 1) : path}`
-    }/`.replace(/\/\//g, '/')
-
-    const alternative = [
-      [
-        dirNameWithSlash,
-        fileNameWithoutExt,
-        DEFAULT_EXT,
-      ],
-      [
-        dirNameWithSlash,
-        fileNameWithoutExt,
-        '',
-      ],
-      [
-        `${dirNameWithSlash}${fileNameWithoutExt}/`,
-        DEFAULT_ENTRY,
-        DEFAULT_EXT,
-      ],
-      [
-        `${dirNameWithSlash}${fileNameWithoutExt}/`,
-        DEFAULT_ENTRY,
-        '',
-      ],
-    ]
+    const fullPath = resolvePath(baseDir, path.replace(/\.js$/, ''))
 
     let filePath
     let fileName
     let dirName
     let fn
-    for (let i = 0; i < alternative.length; i++) {
-      filePath = alternative[i].join('')
+    // eslint-disable-next-line no-restricted-syntax
+    for (const alternative of [
+      '',
+      DEFAULT_EXT,
+      DEFAULT_ENTRY + DEFAULT_EXT,
+      DEFAULT_ENTRY,
+    ]) {
+      filePath = fullPath + alternative
       fn = srcCache.get(filePath)
       if (fn) {
-        // eslint-disable-next-line prefer-destructuring
-        dirName = alternative[i][0]
-        fileName = alternative[i][1] + alternative[i][2]
+        const pathSegs = /((?:[^/]*\/)*)(.*)/.exec(filePath)
+        dirName = pathSegs[1]
+        fileName = pathSegs[2]
+
         const exports = requireCache.get(filePath)
         if (exports) {
           return exports

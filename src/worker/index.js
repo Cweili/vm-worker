@@ -6,10 +6,11 @@ const pluginSetups = {
   onLoad: [],
 }
 
-const fns = {
-  ...plugin(pluginSetups),
-  ...exec(pluginSetups),
-}
+const fns = Object.assign(
+  {},
+  plugin(pluginSetups),
+  exec(pluginSetups),
+)
 
 self.addEventListener('message', (e) => {
   const {

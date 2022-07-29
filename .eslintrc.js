@@ -20,6 +20,8 @@ module.exports = {
     'no-new-func': ['off'],
     'no-plusplus': ['off'],
     'no-underscore-dangle': ['off'],
+    'prefer-destructuring': ['off'],
+    'prefer-object-spread': ['off'],
     semi: ['error', 'never'],
   },
 }
