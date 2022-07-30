@@ -21,7 +21,9 @@ it('should support es modules', async () => {
     },
     {
       path: 'index.js',
-      src: 'import { plus as plus1 } from "./plus1"\nimport plus2 from "./plus2"\nexport default function (a, b) { return plus1(a, b) + plus2(a, b) }',
+      src: `import { plus as plus1 } from "./plus1"
+import plus2 from "./plus2"
+export default function (a, b) { return plus1(a, b) + plus2(a, b) }`,
     },
   ])
 

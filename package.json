@@ -57,6 +57,7 @@
     "@babel/plugin-transform-runtime": "^7.18.5",
     "@babel/preset-env": "^7.18.2",
     "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-url": "^7.0.0",
     "babel-jest": "^28.1.1",
@@ -73,6 +74,7 @@
     "rexreplace": "^7.0.7",
     "rollup": "^2.75.6",
     "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "sucrase": "^3.24.0"
   }
 }

@@ -1,4 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
 import url from '@rollup/plugin-url'
 import { string } from 'rollup-plugin-string'
@@ -11,6 +12,7 @@ const plugins = [
 
 const pluginModules = [
   'esmodule',
+  'sucrase',
 ]
 
 export default pluginModules
@@ -25,6 +27,7 @@ export default pluginModules
       ],
       plugins: plugins
         .concat([
+          commonjs(),
           terser({
             compress: {
               drop_debugger: false,

@@ -42,7 +42,24 @@ it('should execute scripts', async () => {
   vm.terminate()
 })
 
-it('should handles module not exist', async () => {
+it('should return default export when it is not a function', async () => {
+  const VM = (await import('../src')).default
+
+  const vm = VM()
+
+  await vm.require([
+    {
+      path: 'notExportFunction',
+      src: 'module.exports = 1',
+    },
+  ])
+
+  expect(await vm.exec('notExportFunction')).toBe(1)
+
+  vm.terminate()
+})
+
+it('should throw error on module not exist', async () => {
   const VM = (await import('../src')).default
 
   const vm = VM()

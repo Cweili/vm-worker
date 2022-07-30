@@ -11,6 +11,14 @@ async function fetchScript(url) {
   return resp.text()
 }
 
+function isFunction(value) {
+  const type = Object.prototype.toString.call(value)
+
+  return type === '[object Function]'
+    || type === '[object GeneratorFunction]'
+    || type === '[object AsyncFunction]'
+}
+
 function getAbsolutePath(path) {
   return `${path[0] === '/' ? '' : '/'}${path}`
 }
@@ -39,7 +47,7 @@ function resolvePath(baseDir, relativePath) {
 }
 
 function getRequire(baseDir = '/') {
-  return (path, originalPath) => {
+  return (path, originalPath, useDefaultExport) => {
     const module = {
       exports: {},
     }
@@ -80,7 +88,8 @@ function getRequire(baseDir = '/') {
         dirName,
       )
       requireCache.set(filePath, module.exports)
-      return module.exports
+      const defaultExport = useDefaultExport && module.exports && module.exports.default
+      return defaultExport == null ? module.exports : defaultExport
     }
     throw new Error(`module "${originalPath || path}" not found`)
   }
@@ -123,7 +132,12 @@ export default function setup(pluginSetups) {
     exec(debug, path, ...args) {
       return new Promise((resolve, reject) => {
         try {
-          resolve(requireModule(getAbsolutePath(path), path)(...args))
+          const defaultExport = requireModule(getAbsolutePath(path), path, true)
+          if (isFunction(defaultExport)) {
+            resolve(defaultExport(...args))
+          } else {
+            resolve(defaultExport)
+          }
         } catch (err) {
           if (debug) {
             console.error('[VmWorker]', err)
