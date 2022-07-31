@@ -9,9 +9,18 @@
 [![build][badge-build]][workflows]
 [![coverage][badge-coverage]][coveralls]
 
-Tiny VM for browser to execute javascript modules in Web Worker.
+Tiny virtual machine for browser to execute javascript modules in Web Worker.
+
+## Features
+
+- Run code in a isolated scope without pollute your environment
+- Support CommonJS and ESModules (by plugin)
+- Support TypeScript and Flow (by plugin)
+- Based on Web Worker
 
 ## Usage
+
+### Basic usage
 
 App.js
 
@@ -49,7 +58,7 @@ a.js
 module.exports = (a, b) => (a + b + require('module-one'))
 ```
 
-### ECMAScript Modules
+### ESModule Plugin
 
 App.js
 
@@ -90,6 +99,57 @@ a.js
 import { ONE } from 'module-one'
 
 export function plus(a, b) {
+  return a + b + ONE
+}
+```
+
+### Sucrase plugin
+
+Sucrase is similar to Babel, which compiles TypeScript, Flow and JSX to standard JavaScript.
+
+[Sucrase transform options document](https://github.com/alangpierce/sucrase#transforms)
+
+App.js
+
+```ts
+import VM from 'vm-worker'
+import SucrasePlugin from 'vm-worker/dist/plugins/sucrase.esm'
+
+const vm = VM({
+  plugins: [
+    SucrasePlugin({
+      ... // Sucrase transform options
+    }),
+  ],
+})
+
+await vm.require([
+  {
+    path: 'module-one/index.js',
+    src: `export const ONE: number = 1`
+  },
+  {
+    path: '/dirA/a.js',
+    url: 'https://xxx.com/a.js',
+  },
+  {
+    path: '/dirB/b.js',
+    src: `import { plus } from "../dirA/a"
+          export default plus`,
+  },
+])
+
+await vm.exec('/dirB/b.js', 1, 2) // => 4
+
+vm.terminate()
+```
+
+a.js
+
+```ts
+import { ONE } from 'module-one'
+
+export function plus(a: number, b: number) {
   return a + b + ONE
 }
 ```
