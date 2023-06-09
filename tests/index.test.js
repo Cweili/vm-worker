@@ -1,6 +1,10 @@
 import './mocks/web-workers'
 
 it('should execute scripts', async () => {
+  global.fetch = jest.fn(() => Promise.resolve({
+    text: () => 'module.exports = (a, b) => (a + b)',
+  }))
+
   const VM = (await import('../src')).default
 
   const vm = VM()

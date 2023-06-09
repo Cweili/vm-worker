@@ -25,7 +25,6 @@ module.exports = {
         ],
       ],
       plugins: [
-        '@babel/plugin-proposal-async-generator-functions',
         [
           '@babel/plugin-transform-runtime',
           {
