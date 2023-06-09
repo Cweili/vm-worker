@@ -173,7 +173,7 @@ npm i vm-worker
 [badge-issues]: https://img.shields.io/github/issues/Cweili/vm-worker.svg
 [github]: https://github.com/Cweili/vm-worker
 
-[badge-build]: https://img.shields.io/github/workflow/status/Cweili/vm-worker/ci/master
+[badge-build]: https://img.shields.io/github/actions/workflow/status/Cweili/vm-worker/ci.yml?branch=master
 [workflows]: https://github.com/Cweili/vm-worker/actions/workflows/ci.yml?query=branch%3Amaster
 
 [badge-coverage]: https://img.shields.io/coveralls/github/Cweili/vm-worker/master.svg

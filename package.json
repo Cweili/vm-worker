@@ -1,6 +1,6 @@
 {
   "name": "vm-worker",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Tiny virtual machine for browser to execute javascript modules in Web Worker",
   "keywords": [
     "virtual",
@@ -30,7 +30,7 @@
   },
   "author": "Cweili",
   "license": "MIT",
-  "homepage": "https://cweili.github.io/vm-worker/",
+  "homepage": "https://github.com/Cweili/vm-worker",
   "bugs": {
     "url": "https://github.com/Cweili/vm-worker/issues"
   },
@@ -63,6 +63,9 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-url": "^8.0.1",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-url": "^8.0.1",
     "babel-jest": "^29.1.2",
     "eslint": "^8.17.0",
