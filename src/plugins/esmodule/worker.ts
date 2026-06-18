@@ -1,9 +1,10 @@
 /* global plugin */
-// eslint-disable-next-line import/no-extraneous-dependencies
+declare const plugin: any
+
 import { rewrite } from 'rewrite-imports'
 
-plugin.on('load', (content) => {
-  const keys = []
+plugin.on('load', (content: string): string => {
+  const keys: string[] = []
   let key
   let result = content
 
@@ -12,8 +13,8 @@ plugin.on('load', (content) => {
 
     // Exports
     .replace(/export default/, 'module.exports =')
-    .replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|=))/gi, (_, type, name) => keys.push(name) && (`${type} ${name}`))
-    .replace(/export\s*\{([\s\S]*?)\}/gi, (_, list) => {
+    .replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|=))/gi, (_: string, type: string, name: string) => keys.push(name) && (`${type} ${name}`))
+    .replace(/export\s*\{([\s\S]*?)\}/gi, (_: string, list: string) => {
       const arr = list.split(',')
       let tmp
       let out = ''
@@ -26,7 +27,7 @@ plugin.on('load', (content) => {
     })
 
   // eslint-disable-next-line no-cond-assign
-  for (keys.sort(); key = keys.shift();) {
+  for (keys.sort(); key = keys.shift()!;) {
     result += `\nexports.${key} = ${key};`
   }
 

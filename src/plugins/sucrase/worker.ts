@@ -1,8 +1,9 @@
 /* global plugin */
-// eslint-disable-next-line import/no-extraneous-dependencies
+declare const plugin: any
+
 import { transform } from 'sucrase'
 
-plugin.on('load', (content) => (
+plugin.on('load', (content: string): string => (
   transform(content, Object.assign(
     {
       transforms: ['typescript', 'imports'],

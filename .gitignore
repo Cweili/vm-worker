@@ -38,3 +38,10 @@ yarn-error.log*
 /module
 /modern
 /dist
+
+# docs
+docs/node_modules
+docs/dist
+
+# trae
+.trae/

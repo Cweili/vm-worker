@@ -1,33 +1,37 @@
-import './mocks/web-workers'
-import EsmodulePlugin from '../src/plugins/esmodule'
+import { describe, it } from 'node:test'
+import assert from 'node:assert/strict'
+import './mocks/web-workers.js'
+import EsmodulePlugin from '../src/plugins/esmodule/index.ts'
 
-it('should support es modules', async () => {
-  const VM = (await import('../src')).default
+describe('esmodule plugin', () => {
+  it('should support es modules', async () => {
+    const VM = (await import('../src/index.ts')).default
 
-  const vm = VM({
-    plugins: [
-      EsmodulePlugin(),
-    ],
-  })
+    const vm = VM({
+      plugins: [
+        EsmodulePlugin(),
+      ],
+    })
 
-  await vm.require([
-    {
-      path: 'plus1.js',
-      src: 'export function plus(a, b) { return a + b }',
-    },
-    {
-      path: 'plus2.js',
-      src: 'export default function (a, b) { return a + b }',
-    },
-    {
-      path: 'index.js',
-      src: `import { plus as plus1 } from "./plus1"
+    await vm.require([
+      {
+        path: 'plus1.js',
+        src: 'export function plus(a, b) { return a + b }',
+      },
+      {
+        path: 'plus2.js',
+        src: 'export default function (a, b) { return a + b }',
+      },
+      {
+        path: 'index.js',
+        src: `import { plus as plus1 } from "./plus1"
 import plus2 from "./plus2"
 export default function (a, b) { return plus1(a, b) + plus2(a, b) }`,
-    },
-  ])
+      },
+    ])
 
-  expect(await vm.exec('index.js', 1, 2)).toBe(6)
+    assert.strictEqual(await vm.exec('index.js', 1, 2), 6)
 
-  vm.terminate()
+    vm.terminate()
+  })
 })

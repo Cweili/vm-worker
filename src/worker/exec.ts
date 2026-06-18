@@ -1,17 +1,17 @@
 const DEFAULT_ENTRY = '/index'
 const DEFAULT_EXT = '.js'
 
-const srcCache = new Map()
-const requireCache = new Map()
+const srcCache = new Map<string, Function>()
+const requireCache = new Map<string, any>()
 
-async function fetchScript(url) {
+async function fetchScript(url: string): Promise<string> {
   const resp = await fetch(url, {
     cache: 'force-cache',
   })
   return resp.text()
 }
 
-function isFunction(value) {
+function isFunction(value: any): boolean {
   const type = Object.prototype.toString.call(value)
 
   return type === '[object Function]'
@@ -19,20 +19,19 @@ function isFunction(value) {
     || type === '[object AsyncFunction]'
 }
 
-function getAbsolutePath(path) {
+function getAbsolutePath(path: string): string {
   return `${path[0] === '/' ? '' : '/'}${path}`
 }
 
-function resolvePath(baseDir, relativePath) {
+function resolvePath(baseDir: string, relativePath: string): string {
   if (relativePath[0] !== '.') {
     return getAbsolutePath(relativePath)
   }
   const path = baseDir.split('/')
-  const segs = []
+  const segs: string[] = []
   segs.push(...relativePath.split('/'))
   path.pop()
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const seg of segs) {
     if (seg === '..') {
       path.pop()
@@ -47,9 +46,9 @@ function resolvePath(baseDir, relativePath) {
 }
 
 function getRequire(baseDir = '/') {
-  return (path, originalPath, useDefaultExport) => {
+  return (path: string, originalPath?: string, useDefaultExport?: boolean): any => {
     const module = {
-      exports: {},
+      exports: {} as any,
     }
     const fullPath = resolvePath(baseDir, path.replace(/\.js$/, ''))
 
@@ -57,7 +56,6 @@ function getRequire(baseDir = '/') {
     let fileName
     let dirName
     let fn
-    // eslint-disable-next-line no-restricted-syntax
     for (const alternative of [
       '',
       DEFAULT_EXT,
@@ -67,7 +65,7 @@ function getRequire(baseDir = '/') {
       filePath = fullPath + alternative
       fn = srcCache.get(filePath)
       if (fn) {
-        const pathSegs = /((?:[^/]*\/)*)(.*)/.exec(filePath)
+        const pathSegs = /((?:[^/]*\/)*)(.*)/.exec(filePath) as RegExpExecArray
         dirName = pathSegs[1]
         fileName = pathSegs[2]
 
@@ -97,7 +95,7 @@ function getRequire(baseDir = '/') {
 
 const requireModule = getRequire()
 
-function nameFunction(name, fn) {
+function nameFunction(name: string, fn: Function): Function {
   Object.defineProperty(fn, 'name', {
     value: name,
     writable: false,
@@ -105,9 +103,19 @@ function nameFunction(name, fn) {
   return fn
 }
 
-export default function setup(pluginSetups) {
+interface PluginSetups {
+  onLoad: Array<(content: string) => string>
+}
+
+interface VMFile {
+  path: string
+  src?: string
+  url?: string
+}
+
+export default function setup(pluginSetups: PluginSetups) {
   return {
-    async require(debug, files) {
+    async require(debug: boolean, files: VMFile[]) {
       const scripts = (await Promise.all(files.map(async (file) => ({
         path: getAbsolutePath(file.path),
         fn: nameFunction(
@@ -129,7 +137,7 @@ export default function setup(pluginSetups) {
       })
     },
 
-    exec(debug, path, ...args) {
+    exec(debug: boolean, path: string, ...args: any[]) {
       return new Promise((resolve, reject) => {
         try {
           const defaultExport = requireModule(getAbsolutePath(path), path, true)

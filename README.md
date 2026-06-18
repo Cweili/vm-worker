@@ -64,7 +64,7 @@ App.js
 
 ```js
 import VM from 'vm-worker'
-import ESMPlugin from 'vm-worker/dist/plugins/esmodule.esm'
+import ESMPlugin from 'vm-worker/esmodule'
 
 const vm = VM({
   plugins: [
@@ -113,7 +113,7 @@ App.js
 
 ```ts
 import VM from 'vm-worker'
-import SucrasePlugin from 'vm-worker/dist/plugins/sucrase.esm'
+import SucrasePlugin from 'vm-worker/sucrase'
 
 const vm = VM({
   plugins: [

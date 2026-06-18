@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import mitt from 'mitt'
 
 const host = mitt()

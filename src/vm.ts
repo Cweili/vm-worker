@@ -1,8 +1,36 @@
-import workerFn from '../dist/workers/vm-worker.worker.txt'
+import workerFn from '../dist/workers/vm-worker.worker.iife.js'
+
+interface VMOptions {
+  debug?: boolean
+  timeout?: number
+  plugins?: any[]
+}
+
+interface VMFile {
+  path: string
+  src?: string
+  url?: string
+}
+
+interface CallEntry {
+  t: ReturnType<typeof setTimeout>
+  cb: (error: any, result: any) => void
+}
+
+interface WorkerMessage {
+  id: string
+  error?: { name: string; message: string; stack: string }
+  result?: any
+}
 
 export default class VM {
-  constructor(options) {
-    const cache = this._c = new Map()
+  private _c: Map<string, CallEntry> = new Map()
+  private _w: Worker
+  private _o: Required<VMOptions>
+  private _p: Promise<any>
+
+  constructor(options?: VMOptions) {
+    const cache = this._c
     const worker = this._w = new Worker(workerFn)
     const opts = this._o = {
       debug: false,
@@ -10,7 +38,7 @@ export default class VM {
       plugins: [],
       ...(options || {}),
     }
-    worker.addEventListener('message', ({ data }) => {
+    worker.addEventListener('message', ({ data }: { data: WorkerMessage }) => {
       const call = cache.get(data.id)
       if (call) {
         clearTimeout(call.t)
@@ -22,10 +50,10 @@ export default class VM {
       : Promise.resolve()
   }
 
-  _call(fn, ...args) {
+  private _call(fn: string, ...args: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       const id = `${Date.now()}${Math.random()}`
-      const cb = (error, result) => {
+      const cb = (error: any, result: any) => {
         if (error) {
           const err = new Error(error.message)
           err.name = error.name
@@ -51,15 +79,15 @@ export default class VM {
     })
   }
 
-  require(files) {
+  require(files: VMFile[]): Promise<any> {
     return this._p.then(() => this._call('require', this._o.debug, files))
   }
 
-  exec(...args) {
+  exec(...args: any[]): Promise<any> {
     return this._p.then(() => this._call('exec', this._o.debug, ...args))
   }
 
-  terminate() {
+  terminate(): void {
     this._w.terminate()
   }
 }

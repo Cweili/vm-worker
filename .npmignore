@@ -5,6 +5,8 @@
 # testing
 coverage
 tests
+test-loader.js
+test-loader-hooks.js
 
 # production
 build
@@ -13,10 +15,10 @@ alfa
 
 # config
 .github
-.babel*
 .browserslistrc
 .eslint*
 *.config.js
+*.config.ts
 
 # misc
 .DS_Store
@@ -40,3 +42,10 @@ yarn-error.log*
 .vscode
 .cache-loade
 .history
+
+# docs
+docs
+vite.docs.config.ts
+scripts
+plugins
+tsconfig.json
