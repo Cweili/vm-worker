@@ -1,6 +1,7 @@
 import { createSignal, Show } from 'solid-js'
 import VM from 'vm-worker'
 import CodeBlock from '../components/CodeBlock'
+import { useI18n } from '../i18n'
 
 const exampleCode = `import VM from 'vm-worker'
 
@@ -25,10 +26,34 @@ await vm3.require([
 ])
 await vm3.exec('error.js') // logs debug info + throws`
 
+const labels = {
+  en: {
+    notFound: 'Module Not Found',
+    timeout: 'Timeout (100ms)',
+    debug: 'Debug Mode',
+    notFoundLabel: 'Module Not Found',
+    timeoutLabel: 'Timeout',
+    debugLabel: 'Debug Error',
+    running: 'Running...',
+  },
+  zh: {
+    notFound: '模块未找到',
+    timeout: '超时 (100ms)',
+    debug: '调试模式',
+    notFoundLabel: '模块未找到',
+    timeoutLabel: '超时',
+    debugLabel: '调试错误',
+    running: '运行中...',
+  },
+}
+
 export default function ErrorDemo() {
   const [result, setResult] = createSignal('')
   const [errorType, setErrorType] = createSignal<'not-found' | 'timeout' | 'debug' | ''>('')
   const [running, setRunning] = createSignal(false)
+  const { lang } = useI18n()
+
+  const l = () => labels[lang()]
 
   async function runNotFound() {
     setRunning(true)
@@ -89,28 +114,28 @@ export default function ErrorDemo() {
       <div class="error-demo">
         <div class="error-demo-buttons">
           <button class="error-btn" onClick={runNotFound} disabled={running()}>
-            Module Not Found
+            {l().notFound}
           </button>
           <button class="error-btn" onClick={runTimeout} disabled={running()}>
-            Timeout (100ms)
+            {l().timeout}
           </button>
           <button class="error-btn" onClick={runDebug} disabled={running()}>
-            Debug Mode
+            {l().debug}
           </button>
         </div>
         <Show when={result()}>
           <div class={`playground-output error output-appear`}>
             <div class="error-demo-type">
-              {errorType() === 'not-found' && '❌ Module Not Found'}
-              {errorType() === 'timeout' && '⏱️ Timeout'}
-              {errorType() === 'debug' && '🐛 Debug Error'}
+              {errorType() === 'not-found' && `❌ ${l().notFoundLabel}`}
+              {errorType() === 'timeout' && `⏱️ ${l().timeoutLabel}`}
+              {errorType() === 'debug' && `🐛 ${l().debugLabel}`}
             </div>
             <pre class="output-content">{result()}</pre>
           </div>
         </Show>
         <Show when={running()}>
           <div class="playground-output output-appear">
-            <span class="loading-spinner" /> Running...
+            <span class="loading-spinner" /> {l().running}
           </div>
         </Show>
       </div>

@@ -30,6 +30,16 @@
   }
 }
 
+/* 标题渐变滚动动画 */
+@keyframes gradient-scroll {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
 /* 脉冲动画 */
 @keyframes pulse {
   0%, 100% {

@@ -1,5 +1,6 @@
 import { createSignal, Show, JSX } from 'solid-js'
 import VM from 'vm-worker'
+import { useI18n } from '../i18n'
 
 interface VMFile {
   path: string
@@ -15,18 +16,26 @@ interface PlaygroundProps {
   children?: JSX.Element
 }
 
+const labels = {
+  en: { run: '▶ Run', running: 'Running...', clickToRun: 'Click "Run" to execute the code', editor: 'editor', output: 'output' },
+  zh: { run: '▶ 运行', running: '运行中...', clickToRun: '点击"运行"执行代码', editor: '编辑器', output: '输出' },
+}
+
 export default function Playground(props: PlaygroundProps) {
   const [code, setCode] = createSignal(props.initialCode)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal('')
   const [running, setRunning] = createSignal(false)
+  const { lang } = useI18n()
+
+  const l = () => labels[lang()]
 
   async function run() {
     setRunning(true)
     setError('')
     setOutput('')
     try {
-      const vm = VM({ plugins: props.plugins })
+      const vm = VM(props.plugins?.length ? { plugins: props.plugins } : {})
       await vm.require([
         ...(props.modules || []),
         { path: 'index.js', src: code() }
@@ -46,7 +55,7 @@ export default function Playground(props: PlaygroundProps) {
       <div class="playground-layout">
         <div class="playground-editor-section">
           <div class="playground-editor-header">
-            <span class="playground-editor-label">editor</span>
+            <span class="playground-editor-label">{l().editor}</span>
           </div>
           <textarea
             class="playground-editor"
@@ -61,16 +70,16 @@ export default function Playground(props: PlaygroundProps) {
               onClick={run}
               disabled={running()}
             >
-              <Show when={running()} fallback={<>▶ Run</>}>
+              <Show when={running()} fallback={<>{l().run}</>}>
                 <span class="loading-spinner" />
-                Running...
+                {l().running}
               </Show>
             </button>
           </div>
         </div>
         <div class="playground-output-section">
           <div class="playground-output-header">
-            <span class="playground-output-label">output</span>
+            <span class="playground-output-label">{l().output}</span>
           </div>
           <Show when={output() || error()}>
             <div class={`playground-output ${error() ? 'error' : 'success'} output-appear`}>
@@ -81,7 +90,7 @@ export default function Playground(props: PlaygroundProps) {
           </Show>
           <Show when={!output() && !error()}>
             <div class="playground-output-placeholder">
-              Click "Run" to execute the code
+              {l().clickToRun}
             </div>
           </Show>
         </div>

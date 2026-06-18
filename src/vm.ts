@@ -38,6 +38,9 @@ export default class VM {
       plugins: [],
       ...(options || {}),
     }
+    if (!Array.isArray(opts.plugins)) {
+      opts.plugins = []
+    }
     worker.addEventListener('message', ({ data }: { data: WorkerMessage }) => {
       const call = cache.get(data.id)
       if (call) {
