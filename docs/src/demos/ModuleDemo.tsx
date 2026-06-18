@@ -26,8 +26,8 @@ vm.terminate()`
 export default function ModuleDemo() {
   return (
     <div class="demo">
-      <Playground initialCode={initialCode} modules={modules} args={[3, 4]} />
       <CodeBlock code={exampleCode} />
+      <Playground initialCode={initialCode} modules={modules} args={[3, 4]} />
     </div>
   )
 }

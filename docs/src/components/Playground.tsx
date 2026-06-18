@@ -62,7 +62,6 @@ export default function Playground(props: PlaygroundProps) {
             value={code()}
             onInput={(e) => setCode(e.currentTarget.value)}
             spellcheck={false}
-            rows={8}
           />
           <div class="playground-actions">
             <button

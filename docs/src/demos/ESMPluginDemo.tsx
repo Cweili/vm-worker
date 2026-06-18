@@ -34,13 +34,13 @@ vm.terminate()`
 export default function ESMPluginDemo() {
   return (
     <div class="demo">
+      <CodeBlock code={exampleCode} />
       <Playground
         initialCode={initialCode}
         modules={modules}
         args={[5, 6]}
         plugins={[ESMPlugin()]}
       />
-      <CodeBlock code={exampleCode} />
     </div>
   )
 }

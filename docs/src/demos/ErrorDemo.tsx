@@ -111,6 +111,7 @@ export default function ErrorDemo() {
 
   return (
     <div class="demo">
+      <CodeBlock code={exampleCode} />
       <div class="error-demo">
         <div class="error-demo-buttons">
           <button class="error-btn" onClick={runNotFound} disabled={running()}>
@@ -139,7 +140,6 @@ export default function ErrorDemo() {
           </div>
         </Show>
       </div>
-      <CodeBlock code={exampleCode} />
     </div>
   )
 }

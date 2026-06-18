@@ -18,8 +18,8 @@ vm.terminate()`
 export default function BasicDemo() {
   return (
     <div class="demo">
-      <Playground initialCode={initialCode} args={[1, 2]} />
       <CodeBlock code={exampleCode} />
+      <Playground initialCode={initialCode} args={[1, 2]} />
     </div>
   )
 }

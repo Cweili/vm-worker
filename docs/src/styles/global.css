@@ -34,31 +34,36 @@ body {
   top: 1rem;
   right: 1rem;
   z-index: 100;
-  width: 36px;
-  height: 36px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 50%;
+  border-radius: 999px;
   color: var(--text-secondary);
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: all var(--transition-fast);
-  padding: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
 }
 
 .lang-switch:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-color-hover);
   color: var(--text-primary);
-  transform: scale(1.1);
 }
 
 .lang-switch svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.lang-switch-text {
+  line-height: 1;
 }
 
 /* Hero Section */
@@ -392,14 +397,14 @@ body {
 
 /* Demo */
 .demo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1200px) {
   .demo {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }
 
@@ -420,6 +425,7 @@ body {
 .playground-output-section {
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .playground-editor-header,
@@ -434,10 +440,12 @@ body {
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex-shrink: 0;
 }
 
 .playground-editor {
   width: 100%;
+  flex: 1;
   padding: 1rem;
   background: transparent;
   border: none;
@@ -447,6 +455,7 @@ body {
   line-height: 1.6;
   resize: none;
   outline: none;
+  min-height: 160px;
 }
 
 .playground-editor:focus {
@@ -525,7 +534,23 @@ body {
   font-style: italic;
 }
 
-/* CodeBlock */
+/* Responsive playground layout */
+@media (min-width: 768px) {
+  .playground-layout {
+    flex-direction: row;
+  }
+
+  .playground-editor-section,
+  .playground-output-section {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .playground-output-section {
+    border-top: none;
+    border-left: 2px solid var(--border-color);
+  }
+}
 .code-block {
   background: var(--bg-code);
   border: 1px solid var(--border-color);
@@ -624,16 +649,4 @@ body {
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
-}
-
-/* Responsive playground layout */
-@media (min-width: 768px) {
-  .playground-layout {
-    flex-direction: row;
-  }
-
-  .playground-output-section {
-    border-top: none;
-    border-left: 2px solid var(--border-color);
-  }
 }

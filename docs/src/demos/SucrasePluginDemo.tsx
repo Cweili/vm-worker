@@ -40,13 +40,13 @@ vm.terminate()`
 export default function SucrasePluginDemo() {
   return (
     <div class="demo">
+      <CodeBlock code={exampleCode} lang="typescript" />
       <Playground
         initialCode={initialCode}
         modules={modules}
         args={[5, 6]}
         plugins={[SucrasePlugin({ transforms: ['typescript', 'imports'] })]}
       />
-      <CodeBlock code={exampleCode} lang="typescript" />
     </div>
   )
 }

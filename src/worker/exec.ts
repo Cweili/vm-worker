@@ -42,7 +42,7 @@ function resolvePath(baseDir: string, relativePath: string): string {
 
   const result = path.join('/')
 
-  return result === '/' ? '' : result
+  return result === '/' ? '' : getAbsolutePath(result)
 }
 
 function getRequire(baseDir = '/') {

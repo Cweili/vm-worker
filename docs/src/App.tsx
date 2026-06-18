@@ -1,4 +1,4 @@
-import { onMount, For } from 'solid-js'
+import { onMount, For, Show } from 'solid-js'
 import DemoSection from './components/DemoSection'
 import BasicDemo from './demos/BasicDemo'
 import ModuleDemo from './demos/ModuleDemo'
@@ -79,7 +79,12 @@ function App() {
         onClick={() => setLang(lang() === 'en' ? 'zh' : 'en')}
         title={lang() === 'en' ? '切换到中文' : 'Switch to English'}
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <Show when={lang() === 'en'} fallback={
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        }>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 4h8v16"/><path d="M4 12h8"/><path d="M8 4v8"/></svg>
+        </Show>
+        <span class="lang-switch-text">{lang() === 'en' ? '中文' : 'EN'}</span>
       </button>
 
       {/* Hero Section */}
@@ -106,7 +111,7 @@ function App() {
               GitHub
             </a>
             <a href="https://www.npmjs.com/package/vm-worker" class="btn btn-secondary" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l3.618 3.239 3.254-3.239v11.39h-2.055V9.93l-1.199 1.08-1.206-1.08v6.783H5.13z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" rx="3" fill="#CB3837"/><text x="5" y="15" font-family="Arial,sans-serif" font-weight="700" font-size="13" fill="white">n</text></svg>
               npm
             </a>
           </div>
