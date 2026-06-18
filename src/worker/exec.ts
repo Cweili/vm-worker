@@ -62,7 +62,7 @@ function getRequire(baseDir = '/') {
       DEFAULT_ENTRY + DEFAULT_EXT,
       DEFAULT_ENTRY,
     ]) {
-      filePath = fullPath + alternative
+      filePath = (fullPath + alternative).replace(/\/{2,}/g, '/')
       fn = srcCache.get(filePath)
       if (fn) {
         const pathSegs = /((?:[^/]*\/)*)(.*)/.exec(filePath) as RegExpExecArray

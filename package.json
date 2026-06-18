@@ -67,7 +67,7 @@
     "lint": "eslint src/",
     "test": "node --import ./test-loader.js --test tests/*.test.js",
     "test:coverage": "node --import ./test-loader.js --test --experimental-test-coverage tests/*.test.js",
-    "test:ci": "node --import ./test-loader.js --test --experimental-test-coverage --test-reporter spec --test-reporter lcov --test-reporter-destination stdout --test-reporter-destination coverage/lcov.info tests/*.test.js"
+    "test:ci": "node -e \"require('fs').mkdirSync('coverage',{recursive:true})\" && node --import ./test-loader.js --test --experimental-test-coverage --test-reporter spec --test-reporter lcov --test-reporter-destination stdout --test-reporter-destination coverage/lcov.info tests/*.test.js"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
