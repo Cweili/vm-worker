@@ -1,4 +1,4 @@
-import { onMount, For, Show } from 'solid-js'
+import { onMount, For, Show, createSignal } from 'solid-js'
 import DemoSection from './components/DemoSection'
 import BasicDemo from './demos/BasicDemo'
 import ModuleDemo from './demos/ModuleDemo'
@@ -54,8 +54,16 @@ const i18n = {
 function App() {
   let heroRef: HTMLDivElement | undefined
   const { lang, setLang } = useI18n()
+  const [installCopied, setInstallCopied] = createSignal(false)
 
   const t = () => i18n[lang()]
+
+  function handleInstallCopy() {
+    navigator.clipboard.writeText(t().install).then(() => {
+      setInstallCopied(true)
+      setTimeout(() => setInstallCopied(false), 2000)
+    })
+  }
 
   onMount(() => {
     if (heroRef) {
@@ -102,17 +110,24 @@ function App() {
             {t().description}
           </p>
           <div class="hero-actions">
-            <div class="hero-install">
+            <button class={`hero-install ${installCopied() ? 'copied' : ''}`} onClick={handleInstallCopy} title="Copy install command">
               <span class="hero-install-prompt">$</span>
               <code>{t().install}</code>
-            </div>
+              <span class="hero-install-copy">
+                <Show when={installCopied()} fallback={
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                }>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </Show>
+              </span>
+            </button>
             <a href="https://github.com/Cweili/vm-worker" class="btn btn-primary" target="_blank" rel="noopener">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
               GitHub
             </a>
             <a href="https://www.npmjs.com/package/vm-worker" class="btn btn-secondary" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" rx="3" fill="#CB3837"/><text x="5" y="15" font-family="Arial,sans-serif" font-weight="700" font-size="13" fill="white">n</text></svg>
-              npm
+              <svg width="20" height="20" viewBox="0 0 27.23 27.23" aria-hidden="true"><rect fill="#CB3837" width="27.23" height="27.23" rx="2"></rect><polygon fill="#fff" points="5.8 21.75 13.66 21.75 13.67 9.98 17.59 9.98 17.58 21.76 21.51 21.76 21.52 6.06 5.82 6.04 5.8 21.75"></polygon></svg>
+              NPM
             </a>
           </div>
         </div>

@@ -154,7 +154,7 @@ body {
 }
 
 .hero-install {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
@@ -165,6 +165,18 @@ body {
   font-size: 0.95rem;
   color: var(--text-primary);
   box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.hero-install:hover {
+  transform: translateY(-2px);
+  background: var(--bg-card-hover);
+  border-color: var(--border-color-hover);
+}
+
+.hero-install.copied {
+  border-color: rgba(74, 222, 128, 0.4);
 }
 
 .hero-install-prompt {
@@ -174,6 +186,22 @@ body {
 
 .hero-install code {
   color: var(--text-primary);
+}
+
+.hero-install-copy {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  margin-left: 0.25rem;
+}
+
+.hero-install:hover .hero-install-copy {
+  color: var(--text-primary);
+}
+
+.hero-install.copied .hero-install-copy {
+  color: var(--text-success);
 }
 
 /* Buttons */
