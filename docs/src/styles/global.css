@@ -34,22 +34,31 @@ body {
   top: 1rem;
   right: 1rem;
   z-index: 100;
-  padding: 0.4rem 0.8rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: all var(--transition-fast);
+  padding: 0;
 }
 
 .lang-switch:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-color-hover);
   color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.lang-switch svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* Hero Section */
@@ -352,7 +361,7 @@ body {
 
 .demo-section-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -405,14 +414,12 @@ body {
 .playground-layout {
   display: flex;
   flex-direction: column;
-  min-height: 280px;
 }
 
 .playground-editor-section,
 .playground-output-section {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .playground-editor-header,
@@ -430,7 +437,6 @@ body {
 }
 
 .playground-editor {
-  flex: 1;
   width: 100%;
   padding: 1rem;
   background: transparent;
@@ -439,9 +445,8 @@ body {
   font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1.6;
-  resize: vertical;
+  resize: none;
   outline: none;
-  min-height: 180px;
 }
 
 .playground-editor:focus {
@@ -484,14 +489,12 @@ body {
 }
 
 .playground-output {
-  flex: 1;
   padding: 1rem;
   margin: 0.5rem;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
   font-size: 0.9rem;
   overflow: auto;
-  max-height: 200px;
 }
 
 .playground-output.success {
@@ -513,7 +516,6 @@ body {
 }
 
 .playground-output-placeholder {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -549,20 +551,24 @@ body {
 }
 
 .code-block-copy {
-  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  font-size: 0.75rem;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .code-block-copy:hover {
-  background: var(--bg-card-hover);
   color: var(--text-primary);
-  border-color: var(--border-color-hover);
+}
+
+.code-block-copy.copied {
+  color: var(--text-success);
 }
 
 .code-block-pre {

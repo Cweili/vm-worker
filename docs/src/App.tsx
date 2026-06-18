@@ -77,8 +77,9 @@ function App() {
       <button
         class="lang-switch"
         onClick={() => setLang(lang() === 'en' ? 'zh' : 'en')}
+        title={lang() === 'en' ? '切换到中文' : 'Switch to English'}
       >
-        {t().langSwitch}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </button>
 
       {/* Hero Section */}
@@ -105,7 +106,7 @@ function App() {
               GitHub
             </a>
             <a href="https://www.npmjs.com/package/vm-worker" class="btn btn-secondary" target="_blank" rel="noopener">
-              <svg width="20" height="8" viewBox="0 0 18 7" fill="currentColor"><path d="M0 0h18v6H9v1H5V6H0V0zm1 5h2V2h1v3h1V1H1v4zm5-4v5h2V5h2V1H6zm2 1h1v2H8V2zm3-1v4h2V2h1v3h1V2h1v3h1V1h-5z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l3.618 3.239 3.254-3.239v11.39h-2.055V9.93l-1.199 1.08-1.206-1.08v6.783H5.13z"/></svg>
               npm
             </a>
           </div>
