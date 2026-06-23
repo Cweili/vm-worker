@@ -1,4 +1,4 @@
-![VM Worker](./docs/public/favicon.svg)
+[![VM Worker](./docs/public/favicon.svg)](https://cweili.github.io/vm-worker/)
 
 # VM Worker
 
