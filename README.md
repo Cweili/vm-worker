@@ -1,3 +1,5 @@
+![VM Worker](./docs/public/favicon.svg)
+
 # VM Worker
 
 [![npm][badge-version]][npm]
