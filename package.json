@@ -1,6 +1,6 @@
 {
   "name": "vm-worker",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Tiny virtual machine for browser to execute javascript modules in Web Worker",
   "keywords": [
     "virtual",
@@ -48,12 +48,12 @@
     "./esmodule": {
       "import": "./dist/plugins/esmodule.esm.js",
       "require": "./dist/plugins/esmodule.cjs.js",
-      "default": "./dist/plugins/esmodule.js"
+      "default": "./dist/plugins/esmodule.umd.js"
     },
     "./sucrase": {
       "import": "./dist/plugins/sucrase.esm.js",
       "require": "./dist/plugins/sucrase.cjs.js",
-      "default": "./dist/plugins/sucrase.js"
+      "default": "./dist/plugins/sucrase.umd.js"
     }
   },
   "sideEffects": false,
